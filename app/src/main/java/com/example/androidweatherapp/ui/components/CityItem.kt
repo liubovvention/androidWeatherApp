@@ -3,7 +3,6 @@ package com.example.androidweatherapp.ui.components
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,14 +24,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.example.androidweatherapp.data.CityWeather
 import com.example.androidweatherapp.services.UtilityService
 
 @Composable
 fun CityItem(
     item: CityWeather,
-    isPressable: Boolean = true,
+    isPressable: Boolean = false,
     onItemClick: (CityWeather) -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -47,45 +46,46 @@ fun CityItem(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             // Weather icon
+            val iconUrl = "https://openweathermap.org/img/wn/${item.icon}.png"
             Image(
-                painter = rememberImagePainter("https://openweathermap.org/img/wn/${item.icon}.png"),
+                painter = rememberAsyncImagePainter(iconUrl),
                 contentDescription = "Weather Icon",
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.size(50.dp) // Adjust size as needed
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
             // City description
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.weight(3f)) {
                 Text(text = item.city, style = MaterialTheme.typography.bodyLarge)
                 Text(text = item.descr, style = MaterialTheme.typography.bodyMedium)
             }
 
             // Temperature
-            Text(
-                text = "${temperature}°F",
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.Black
-            )
-        }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "${temperature}°F",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Black
+                )
+            }
 
-        // Action button (pressable)
-        if (isPressable) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                horizontalArrangement = Arrangement.End
-            ) {
-                IconButton(onClick = { onItemClick(item) }) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowForward, // Right arrow icon
-                        contentDescription = "Right Arrow",
-                        tint = Color.Blue
-                    )
+            // Action button (pressable)
+            if (isPressable) {
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    IconButton(onClick = { onItemClick(item) }) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowForward, // Right arrow icon
+                            contentDescription = "Right Arrow",
+                            tint = Color.Blue
+                        )
+                    }
                 }
             }
         }
+
     }
 }
 
