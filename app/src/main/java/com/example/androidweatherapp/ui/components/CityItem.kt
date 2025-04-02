@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -77,9 +77,9 @@ fun CityItem(
                 ) {
                     IconButton(onClick = { onItemClick(item) }) {
                         Icon(
-                            imageVector = Icons.Filled.ArrowForward, // Right arrow icon
-                            contentDescription = "Right Arrow",
-                            tint = Color.Blue
+                            imageVector = Icons.Default.KeyboardArrowRight, // Right arrow icon
+                            contentDescription = "Chevron Right",
+                            tint = Color.Gray
                         )
                     }
                 }
