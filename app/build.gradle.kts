@@ -64,7 +64,12 @@ dependencies {
     implementation(libs.coroutines)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.coil)
-    implementation(libs.materialiconsextended)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.activity.compose)
+    implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.material3)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

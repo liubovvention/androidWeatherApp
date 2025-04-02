@@ -1,6 +1,7 @@
 package com.example.androidweatherapp.api
 
 import com.example.androidweatherapp.data.WeatherResponse
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -16,7 +17,7 @@ interface WeatherApiService {
     suspend fun getWeather(
         @Query("q") city: String,
         @Query("appid") apiKey: String = APIConfig.API_KEY
-    ): WeatherResponse
+    ): Response<WeatherResponse>
 }
 
 object ApiService {

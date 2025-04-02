@@ -1,6 +1,7 @@
 package com.example.androidweatherapp.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidweatherapp.R
@@ -19,17 +20,36 @@ class CitiesWeatherViewModel : ViewModel() {
     fun loadCitiesWeather(context: Context) {
         viewModelScope.launch {
             val cities = UtilityService.loadJsonFromRaw(context, R.raw.cities_list)
+            //Log.d("DEBUG Model", "Cities List: $cities")
             val weatherList = cities.mapNotNull { city ->
                 try {
-                    val weather = ApiService.weatherApi.getWeather(city.toString())
-                    WeatherData(city.toString(), weather)
+                    Log.d("DEBUG Model", "City API call: $city")
+                    val response = ApiService.weatherApi.getWeather(city)
+
+                    if (response.isSuccessful) {
+                        response.body()?.let { weather ->
+                            Log.d("DEBUG Model", "Response success: $city - $weather")
+                            WeatherData(city, weather)
+                        }
+                    } else {
+                        Log.e(
+                            "DEBUG Model",
+                            "API call failed: $city - HTTP ${response.code()} - ${
+                                response.errorBody()?.string()
+                            }"
+                        )
+                        null
+                    }
                 } catch (e: Exception) {
-                    null // Handle API errors
+                    Log.e("DEBUG Model", "API call error: $city", e)
+                    null
                 }
             }
+            Log.d("DEBUG Model", "Cities Weather List: $weatherList")
             _citiesWeather.value = weatherList
         }
     }
 }
+
 
 data class WeatherData(val city: String, val weather: WeatherResponse)
