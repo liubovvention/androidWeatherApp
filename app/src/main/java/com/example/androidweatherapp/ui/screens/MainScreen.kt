@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,21 +61,31 @@ fun MainScreen(viewModel: CitiesWeatherViewModel = viewModel()) {
                 textAlign = TextAlign.Center // Center align text
             )
         )
-        CityItem(
-            item = CityWeather(
-                city = "New York",
-                descr = "Clear sky",
-                temp = 293.15,
-                icon = "01d"
-            ),
-            isPressable = false,
-            onItemClick = { city ->
-                // You can also do additional logic here if needed
-                print("Cliked")
-            }
-        )
 
         //list here
+        if (citiesWeather.isEmpty()) {
+            CircularProgressIndicator()  // ✅ Show a loading indicator while fetching data
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(citiesWeather) { weatherData ->
+                    CityItem(
+                        item = CityWeather(
+                            city = weatherData.city,
+                            descr = weatherData.weather.weather.firstOrNull()?.description
+                                ?: "Unknown",
+                            temp = weatherData.weather.main.temp,
+                            icon = weatherData.weather.weather.firstOrNull()?.icon ?: "01d"
+                        ),
+                        isPressable = true,
+                        onItemClick = { city ->
+                            print("Clicked on $city")
+                        }
+                    )
+                }
+            }
+        }
     }
 
 }

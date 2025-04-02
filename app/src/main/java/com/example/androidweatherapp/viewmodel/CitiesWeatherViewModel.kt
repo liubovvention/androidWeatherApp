@@ -41,7 +41,7 @@ class CitiesWeatherViewModel : ViewModel() {
                         null
                     }
                 } catch (e: Exception) {
-                    Log.e("DEBUG Model", "API call error: $city", e)
+                    Log.e("DEBUG Model", "API call error: $city, $e", e)
                     null
                 }
             }
